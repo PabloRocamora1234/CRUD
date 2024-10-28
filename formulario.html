@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Sensor</title>
+</head>
+<body>
+    <h1>Formulario de Registro de Sensor</h1>
+    <form action="ws/createElement.php" method="POST">
+        <label for="nombre">Nombre del elemento:</label><br>
+        <input type="text" id="nombre" name="nombre" required><br><br>
+
+        <label for="descripcion">Descripción del elemento:</label><br>
+        <textarea id="descripcion" name="descripcion" required></textarea><br><br>
+
+        <label for="numero_serie">Número de serie:</label><br>
+        <input type="text" id="numero_serie" name="numero_serie" required><br><br>
+
+        <label for="estado">Estado:</label><br>
+        <input type="checkbox" id="activo" name="estado" value="activo"> Activo<br>
+
+        <label for="prioridad">Prioridad:</label><br>
+        <input type="radio" id="alta" name="prioridad" value="alta"> Alta<br>
+        <input type="radio" id="media" name="prioridad" value="media"> Media<br>
+        <input type="radio" id="baja" name="prioridad" value="baja"> Baja<br><br>
+
+        <input type="submit" value="Enviar">
+    </form>
+
+    <hr>
+    <ul>
+        <li><a href="formulario.html">Formulario</a></li>
+        <li><a href="tabla.html">Tabla</a></li>
+        <li><a href="pagina1.html">Página 1</a></li>
+        <li><a href="pagina2.html">Página 2</a></li>
+        <li><a href="pagina3.html">Página 3</a></li>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,5 @@
+{"nombre":"Cristiano","descripcion":"aaaaaaaa","numero_serie":"123456","estado":"activo","prioridad":"media"}
+{"nombre":"Cristiano","descripcion":"aaaaaaaa","numero_serie":"123456","estado":"activo","prioridad":"media"}
+{"nombre":"Pablo","descripcion":"Hola mundo","numero_serie":"7654","estado":"activo","prioridad":"alta"}
+{"nombre":"Juana","descripcion":"ododoododo","numero_serie":"0987","estado":"activo","prioridad":"baja"}
+{"nombre":"Pedra","descripcion":"asdfghjk","numero_serie":"8765","estado":"inactivo","prioridad":"alta"}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla de Sensores</title>
+    <script src="js/tabla.js" defer></script> <!-- Vincula el archivo de JavaScript -->
+</head>
+<body>
+    <h1>Lista de Sensores</h1>
+
+    <!-- Campo de búsqueda -->
+    <label for="buscador">Buscar Sensor:</label>
+    <input type="text" id="buscador" placeholder="Buscar por nombre o descripción">
+
+    <table border="1" id="tablaSensores">
+        <thead>
+            <tr>
+                <th>Nombre del Elemento</th>
+                <th>Descripción</th>
+                <th>Número de Serie</th>
+                <th>Estado</th>
+                <th>Prioridad</th>
+                <th>Acciones</th> <!-- Nueva columna de acciones -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Filas generadas dinámicamente por JavaScript -->
+        </tbody>
+    </table>
+
+    <hr>
+    <ul>
+        <li><a href="formulario.html">Formulario</a></li>
+        <li><a href="tabla.html">Tabla</a></li>
+        <li><a href="pagina1.html">Página 1</a></li>
+        <li><a href="pagina2.html">Página 2</a></li>
+        <li><a href="pagina3.html">Página 3</a></li>
+    </ul>
+</body>
+</html>
