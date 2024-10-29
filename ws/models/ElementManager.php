@@ -71,7 +71,7 @@ class ElementManager {
         return $stmt->execute();
     }
 
-    // Agregar el método getAllElements
+    
     public function getAllElements(): array {
         $sql = "SELECT * FROM elementos";
         $stmt = $this->connection->prepare($sql);
