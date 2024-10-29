@@ -11,14 +11,21 @@ class ElementManager {
     }
 
     public function createElement(Element $element): bool {
-        $sql = "INSERT INTO elementos (nombre, descripcion, numero_serie, estado, prioridad) VALUES (:nombre, :descripcion, :numero_serie, :estado, :prioridad)";
+        $sql = "INSERT INTO elementos (nombre, descripcion, nserie, estado, prioridad) VALUES (:nombre, :descripcion, :nserie, :estado, :prioridad)";
         $stmt = $this->connection->prepare($sql);
 
-        $stmt->bindParam(':nombre', $element->getNombre());
-        $stmt->bindParam(':descripcion', $element->getDescripcion());
-        $stmt->bindParam(':numero_serie', $element->getNumeroSerie());
-        $stmt->bindParam(':estado', $element->getEstado());
-        $stmt->bindParam(':prioridad', $element->getPrioridad());
+        
+        $nombre = $element->getNombre();
+        $descripcion = $element->getDescripcion();
+        $nserie = $element->getNumeroSerie();
+        $estado = $element->getEstado();
+        $prioridad = $element->getPrioridad();
+
+        $stmt->bindParam(':nombre', $nombre);
+        $stmt->bindParam(':descripcion', $descripcion);
+        $stmt->bindParam(':nserie', $nserie);
+        $stmt->bindParam(':estado', $estado);
+        $stmt->bindParam(':prioridad', $prioridad);
 
         return $stmt->execute();
     }
@@ -31,7 +38,7 @@ class ElementManager {
 
         $row = $stmt->fetch();
         if ($row) {
-            return new Element($row['nombre'], $row['descripcion'], $row['numero_serie'], $row['estado'], $row['prioridad']);
+            return new Element($row['nombre'], $row['descripcion'], $row['nserie'], $row['estado'], $row['prioridad']); // Cambiado a nserie
         }
 
         return null;
