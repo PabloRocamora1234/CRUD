@@ -1,12 +1,16 @@
 <?php
+namespace models;
 
-class DB{
+use PDO;
+use PDOException;
+
+class DB {
     private static $instance;
     private static $dsn = 'mysql:host=localhost;dbname=monfab';
     private static $user = 'root';
     private static $password = '';
 
-    private function __construct(){
+    private function __construct() {
         try {
             self::$instance = new PDO(self::$dsn, self::$user, self::$password);
         } catch (PDOException $e) {
@@ -15,11 +19,9 @@ class DB{
     }
 
     public static function getInstance() {
-        if(!self::$instance) {
+        if (!self::$instance) {
             new DB();
         }
         return self::$instance;
     }
 }
-
-?>

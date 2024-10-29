@@ -1,11 +1,11 @@
 <?php
-require_once 'Database/Database.php';
+require_once 'models/DB.php';
 require_once 'models/ElementManager.php';
 
-use Database\Database;
+use models\DB;
 use Models\ElementManager;
 
-$db = (new Database())->getConnection();
+$db = DB::getInstance();
 $manager = new ElementManager($db);
 
 $id = $_GET['id'] ?? null;

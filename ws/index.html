@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Elementos</title>
+</head>
+<body>
+    <h1>Gestión de Elementos</h1>
+
+    <h2>Obtener Todos los Elementos</h2>
+    <form action="getElement.php" method="GET">
+        <button type="submit">Obtener Todos los Elementos</button>
+    </form>
+
+    <h2>Eliminar Elemento</h2>
+    <form action="deleteElement.php" method="GET">
+        <label for="delete-id">ID del Elemento:</label>
+        <input type="text" id="delete-id" name="id" required>
+        <button type="submit">Eliminar</button>
+    </form>
+
+    <h2>Crear Elemento</h2>
+    <form action="createElement2.php" method="POST">
+        <label for="nombre">Nombre:</label>
+        <input type="text" name="nombre" required>
+        <label for="descripcion">Descripción:</label>
+        <input type="text" name="descripcion" required>
+        <label for="numero_serie">Número de Serie:</label>
+        <input type="text" name="numero_serie" required>
+        <label for="estado">Estado:</label>
+        <input type="text" name="estado" value="inactivo">
+        <label for="prioridad">Prioridad:</label>
+        <input type="text" name="prioridad" value="baja">
+        <button type="submit">Crear Elemento</button>
+    </form>
+
+    <h2>Modificar Elemento</h2>
+    <form action="modifyElement.php" method="POST">
+        <label for="modify-id">ID del Elemento:</label>
+        <input type="text" id="modify-id" name="id" required>
+        <label for="nombre">Nuevo Nombre:</label>
+        <input type="text" name="nombre">
+        <label for="descripcion">Nueva Descripción:</label>
+        <input type="text" name="descripcion">
+        <label for="numero_serie">Nuevo Número de Serie:</label>
+        <input type="text" name="numero_serie">
+        <label for="estado">Nuevo Estado:</label>
+        <input type="text" name="estado">
+        <label for="prioridad">Nueva Prioridad:</label>
+        <input type="text" name="prioridad">
+        <button type="submit">Modificar Elemento</button>
+    </form>
+
+</body>
+</html>

@@ -1,10 +1,10 @@
 <?php
-require_once 'Database/Database.php';
+require_once 'models/DB.php';
 require_once 'models/Element.php';
 require_once 'models/ElementManager.php';
 
-use Models\Element;
-use Models\ElementManager;
+use models\Element;
+use models\ElementManager;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = $_POST['nombre'] ?? '';

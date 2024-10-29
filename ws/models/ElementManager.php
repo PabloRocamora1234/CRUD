@@ -1,20 +1,16 @@
 <?php
-namespace Models;
+namespace models;
 
-use Database\Database;
+require_once 'Element.php';
 
-class ElementManager
-{
+class ElementManager {
     private $connection;
 
-    public function __construct()
-    {
-        $db = new Database();
-        $this->connection = $db->getConnection();
+    public function __construct() {
+        $this->connection = DB::getInstance();
     }
 
-    public function createElement(Element $element): bool
-    {
+    public function createElement(Element $element): bool {
         $sql = "INSERT INTO elementos (nombre, descripcion, numero_serie, estado, prioridad) VALUES (:nombre, :descripcion, :numero_serie, :estado, :prioridad)";
         $stmt = $this->connection->prepare($sql);
 
@@ -27,8 +23,7 @@ class ElementManager
         return $stmt->execute();
     }
 
-    public function getElement(int $id): ?Element
-    {
+    public function getElement(int $id): ?Element {
         $sql = "SELECT * FROM elementos WHERE id = :id";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam(':id', $id);
@@ -42,8 +37,7 @@ class ElementManager
         return null;
     }
 
-    public function deleteElement(int $id): ?Element
-    {
+    public function deleteElement(int $id): ?Element {
         $element = $this->getElement($id);
         if ($element) {
             $sql = "DELETE FROM elementos WHERE id = :id";
@@ -56,8 +50,7 @@ class ElementManager
         return null;
     }
 
-    public function modifyElement(int $id, Element $element): bool
-    {
+    public function modifyElement(int $id, Element $element): bool {
         $sql = "UPDATE elementos SET nombre = :nombre, descripcion = :descripcion, numero_serie = :numero_serie, estado = :estado, prioridad = :prioridad WHERE id = :id";
         $stmt = $this->connection->prepare($sql);
         
@@ -70,5 +63,18 @@ class ElementManager
 
         return $stmt->execute();
     }
+
+    // Agregar el método getAllElements
+    public function getAllElements(): array {
+        $sql = "SELECT * FROM elementos";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute();
+
+        $elements = [];
+        while ($row = $stmt->fetch()) {
+            $elements[] = new Element($row['nombre'], $row['descripcion'], $row['numero_serie'], $row['estado'], $row['prioridad']);
+        }
+
+        return $elements;
+    }
 }
-?>

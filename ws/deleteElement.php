@@ -1,15 +1,15 @@
 <?php
-require_once 'Database.php';
-require_once 'ElementManager.php';
+require_once 'models/DB.php';
+require_once 'models/ElementManager.php';
 
-use Database\Database;
+use models\DB;
 use models\ElementManager;
 
-$db = (new Database())->getConnection();
+$db = DB::getInstance();
 $manager = new ElementManager($db);
 
 $id = $_GET['id'] ?? null;
-if ($id && $manager->deleteElement($id)) {
+if ($id && $manager->deleteElement((int)$id)) {
     $response = [
         'success' => true,
         'message' => 'Elemento eliminado correctamente',
@@ -18,10 +18,11 @@ if ($id && $manager->deleteElement($id)) {
 } else {
     $response = [
         'success' => false,
-        'message' => 'Error al eliminar el elemento',
+        'message' => 'Error al eliminar el elemento o ID no proporcionado',
         'data' => null
     ];
 }
 
+header('Content-Type: application/json');
 echo json_encode($response);
 ?>

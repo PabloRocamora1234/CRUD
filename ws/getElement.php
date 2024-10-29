@@ -1,12 +1,11 @@
 <?php
-require_once 'Database/Database.php'; // Ajustamos la ruta según tu estructura
+require_once 'models/DB.php';
 require_once 'models/ElementManager.php';
 
-use Database\Database;
-use Models\ElementManager;
+use models\DB;
+use models\ElementManager;
 
-$db = (new Database())->getConnection();
-$manager = new ElementManager($db);
+$manager = new ElementManager();
 
 $id = $_GET['id'] ?? null;
 
@@ -28,7 +27,7 @@ if ($id) {
     }
 } else {
     $result = $manager->getAllElements();
-    
+
     $response = [
         'success' => true,
         'message' => 'Todos los elementos obtenidos',

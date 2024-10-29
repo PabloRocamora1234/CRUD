@@ -1,7 +1,8 @@
 <?php
-namespace Models;
+namespace models;
 
-use Interfaces\IToJson;
+use interfaces\ITOJSON;
+require_once 'interfaces/ITOJSON.php';
 
 class Element implements IToJson {
     private $nombre;
@@ -10,7 +11,6 @@ class Element implements IToJson {
     private $estado;
     private $prioridad;
 
-    
     public function __construct($nombre, $descripcion, $numero_serie, $estado, $prioridad) {
         $this->nombre = $nombre;
         $this->descripcion = $descripcion;
@@ -19,7 +19,6 @@ class Element implements IToJson {
         $this->prioridad = $prioridad;
     }
 
-    
     public function getNombre() {
         return $this->nombre;
     }
@@ -40,7 +39,6 @@ class Element implements IToJson {
         return $this->prioridad;
     }
 
-    
     public function setNombre($nombre) {
         $this->nombre = $nombre;
     }
@@ -61,7 +59,6 @@ class Element implements IToJson {
         $this->prioridad = $prioridad;
     }
 
-    
     public function toJson() {
         return json_encode([
             'nombre' => $this->nombre,
@@ -72,4 +69,3 @@ class Element implements IToJson {
         ]);
     }
 }
-?>
