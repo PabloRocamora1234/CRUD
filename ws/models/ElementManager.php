@@ -58,13 +58,13 @@ class ElementManager {
     }
 
     public function modifyElement(int $id, Element $element): bool {
-        $sql = "UPDATE elementos SET nombre = :nombre, descripcion = :descripcion, numero_serie = :numero_serie, estado = :estado, prioridad = :prioridad WHERE id = :id";
+        $sql = "UPDATE elementos SET nombre = :nombre, descripcion = :descripcion, nserie = :nserie, estado = :estado, prioridad = :prioridad WHERE id = :id";
         $stmt = $this->connection->prepare($sql);
         
         $stmt->bindParam(':id', $id);
         $stmt->bindParam(':nombre', $element->getNombre());
         $stmt->bindParam(':descripcion', $element->getDescripcion());
-        $stmt->bindParam(':numero_serie', $element->getNumeroSerie());
+        $stmt->bindParam(':nserie', $element->getNumeroSerie());
         $stmt->bindParam(':estado', $element->getEstado());
         $stmt->bindParam(':prioridad', $element->getPrioridad());
 
@@ -79,7 +79,7 @@ class ElementManager {
 
         $elements = [];
         while ($row = $stmt->fetch()) {
-            $elements[] = new Element($row['nombre'], $row['descripcion'], $row['numero_serie'], $row['estado'], $row['prioridad']);
+            $elements[] = new Element($row['nombre'], $row['descripcion'], $row['nserie'], $row['estado'], $row['prioridad']);
         }
 
         return $elements;

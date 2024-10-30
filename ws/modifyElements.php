@@ -12,7 +12,7 @@ $id = $_GET['id'] ?? null;
 $params = [
     'nombre' => $_POST['nombre'] ?? null,
     'descripcion' => $_POST['descripcion'] ?? null,
-    'numero_serie' => $_POST['numero_serie'] ?? null,
+    'nserie' => $_POST['nserie'] ?? null,
     'estado' => $_POST['estado'] ?? null,
     'prioridad' => $_POST['prioridad'] ?? null
 ];
@@ -20,7 +20,7 @@ $params = [
 if ($id && $manager->modifyElement($id, new Element(
         $params['nombre'] ?? '', 
         $params['descripcion'] ?? '', 
-        $params['numero_serie'] ?? '', 
+        $params['nserie'] ?? '', 
         $params['estado'] ?? 'inactivo', 
         $params['prioridad'] ?? 'baja'
     ))) {

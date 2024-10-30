@@ -9,11 +9,11 @@ use models\ElementManager;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = $_POST['nombre'] ?? '';
     $descripcion = $_POST['descripcion'] ?? '';
-    $numero_serie = $_POST['numero_serie'] ?? '';
+    $nserie = $_POST['nserie'] ?? '';
     $estado = $_POST['estado'] ?? 'inactivo';
     $prioridad = $_POST['prioridad'] ?? 'baja';
 
-    $element = new Element($nombre, $descripcion, $numero_serie, $estado, $prioridad);
+    $element = new Element($nombre, $descripcion, $nserie, $estado, $prioridad);
     $elementManager = new ElementManager();
 
     if ($elementManager->createElement($element)) {

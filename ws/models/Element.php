@@ -63,7 +63,7 @@ class Element implements IToJson {
         return json_encode([
             'nombre' => $this->nombre,
             'descripcion' => $this->descripcion,
-            'numero_serie' => $this->numero_serie,
+            'nserie' => $this->nserie,
             'estado' => $this->estado,
             'prioridad' => $this->prioridad
         ]);
