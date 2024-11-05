@@ -1,7 +1,8 @@
 <?php
+// ElementManager.php
 namespace models;
 
-require_once 'Element.php';
+require_once 'DB.php';
 
 class ElementManager {
     private $connection;
@@ -14,20 +15,31 @@ class ElementManager {
         $sql = "INSERT INTO elementos (nombre, descripcion, nserie, estado, prioridad) VALUES (:nombre, :descripcion, :nserie, :estado, :prioridad)";
         $stmt = $this->connection->prepare($sql);
 
-        
+        // Asignación de valores a variables
         $nombre = $element->getNombre();
         $descripcion = $element->getDescripcion();
         $nserie = $element->getNumeroSerie();
         $estado = $element->getEstado();
         $prioridad = $element->getPrioridad();
 
+        // Debugging: verificar valores antes de insertar
+        if (empty($nserie)) {
+            throw new \Exception("El número de serie no puede estar vacío.");
+        }
+
+        // Uso de bindParam
         $stmt->bindParam(':nombre', $nombre);
         $stmt->bindParam(':descripcion', $descripcion);
         $stmt->bindParam(':nserie', $nserie);
         $stmt->bindParam(':estado', $estado);
         $stmt->bindParam(':prioridad', $prioridad);
 
-        return $stmt->execute();
+        try {
+            return $stmt->execute();
+        } catch (\PDOException $e) {
+            echo "Error en la inserción: " . $e->getMessage();
+            return false;
+        }
     }
 
     public function getElement(int $id): ?Element {
@@ -38,7 +50,7 @@ class ElementManager {
 
         $row = $stmt->fetch();
         if ($row) {
-            return new Element($row['nombre'], $row['descripcion'], $row['nserie'], $row['estado'], $row['prioridad']); // Cambiado a nserie
+            return new Element($row['nombre'], $row['descripcion'], $row['nserie'], $row['estado'], $row['prioridad']);
         }
 
         return null;
@@ -60,18 +72,25 @@ class ElementManager {
     public function modifyElement(int $id, Element $element): bool {
         $sql = "UPDATE elementos SET nombre = :nombre, descripcion = :descripcion, nserie = :nserie, estado = :estado, prioridad = :prioridad WHERE id = :id";
         $stmt = $this->connection->prepare($sql);
-        
+
+        // Asignación de valores a variables
+        $nombre = $element->getNombre();
+        $descripcion = $element->getDescripcion();
+        $nserie = $element->getNumeroSerie();
+        $estado = $element->getEstado();
+        $prioridad = $element->getPrioridad();
+
+        // Uso de bindParam
         $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':nombre', $element->getNombre());
-        $stmt->bindParam(':descripcion', $element->getDescripcion());
-        $stmt->bindParam(':nserie', $element->getNumeroSerie());
-        $stmt->bindParam(':estado', $element->getEstado());
-        $stmt->bindParam(':prioridad', $element->getPrioridad());
+        $stmt->bindParam(':nombre', $nombre);
+        $stmt->bindParam(':descripcion', $descripcion);
+        $stmt->bindParam(':nserie', $nserie);
+        $stmt->bindParam(':estado', $estado);
+        $stmt->bindParam(':prioridad', $prioridad);
 
         return $stmt->execute();
     }
 
-    
     public function getAllElements(): array {
         $sql = "SELECT * FROM elementos";
         $stmt = $this->connection->prepare($sql);

@@ -1,9 +1,11 @@
 <?php
 require_once 'models/DB.php';
 require_once 'models/ElementManager.php';
+require_once 'models/Element.php';
 
 use models\DB;
-use Models\ElementManager;
+use models\ElementManager;
+use models\Element;
 
 $db = DB::getInstance();
 $manager = new ElementManager($db);
