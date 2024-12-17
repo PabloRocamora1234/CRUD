@@ -6,35 +6,22 @@ use models\DB;
 use models\ElementManager;
 
 $manager = new ElementManager();
+$response = [
+    'success' => false,
+    'message' => '',
+    'data' => []
+];
 
-$id = $_GET['id'] ?? null;
-
-if ($id) {
-    $result = $manager->getElement($id);
-    
-    if ($result) {
-        $response = [
-            'success' => true,
-            'message' => 'Elemento obtenido',
-            'data' => $result->toJson()
-        ];
-    } else {
-        $response = [
-            'success' => false,
-            'message' => 'Elemento no encontrado',
-            'data' => null
-        ];
-    }
-} else {
-    $result = $manager->getAllElements();
-
-    $response = [
-        'success' => true,
-        'message' => 'Todos los elementos obtenidos',
-        'data' => array_map(function($element) {
-            return $element->toJson();
-        }, $result)
-    ];
+try {
+    $elements = $manager->getAllElements();
+    $response['success'] = true;
+    $response['message'] = 'Todos los elementos obtenidos';
+    $response['data'] = array_map(function($element) {
+        return json_decode($element->toJson(), true);
+    }, $elements);
+} catch (Exception $e) {
+    $response['message'] = 'Error al obtener los elementos: ' . $e->getMessage();
+    error_log('Error en getElement.php: ' . $e->getMessage());
 }
 
 header('Content-Type: application/json');

@@ -1,24 +1,26 @@
 <?php
 namespace models;
 
-use interfaces\ITOJSON;
-require_once 'interfaces/ITOJSON.php';
+use Interfaces\ITOJSON; // Importamos la interfaz IToJson
+require_once 'interfaces/ITOJSON.php'; // Aseguramos que la interfaz esté incluida
 
-class Element implements IToJson {
+class Element implements ITOJSON {
     private $nombre;
     private $descripcion;
     private $nserie;
     private $estado;
     private $prioridad;
 
-    public function __construct($nombre, $descripcion, $nserie, $estado, $prioridad) {
-        $this->nombre = $nombre;
-        $this->descripcion = $descripcion;
-        $this->nserie = $nserie;
-        $this->estado = $estado;
-        $this->prioridad = $prioridad;
+    // Constructor que inicializa las propiedades a partir de un array de datos
+    public function __construct($data) {
+        $this->nombre = $data['nombre'] ?? '';  // Usar ?? para valores por defecto
+        $this->descripcion = $data['descripcion'] ?? '';
+        $this->nserie = $data['nserie'] ?? '';
+        $this->estado = $data['estado'] ?? '';
+        $this->prioridad = $data['prioridad'] ?? '';
     }
 
+    // Métodos getters
     public function getNombre() {
         return $this->nombre;
     }
@@ -39,6 +41,7 @@ class Element implements IToJson {
         return $this->prioridad;
     }
 
+    // Métodos setters
     public function setNombre($nombre) {
         $this->nombre = $nombre;
     }
@@ -47,8 +50,8 @@ class Element implements IToJson {
         $this->descripcion = $descripcion;
     }
 
-    public function setNumeroSerie($nserie) {
-        $this->nserie = $nserie;    
+    public function setNumeroSerie($numero_serie) {
+        $this->nserie = $nserie;
     }
 
     public function setEstado($estado) {
@@ -59,7 +62,9 @@ class Element implements IToJson {
         $this->prioridad = $prioridad;
     }
 
+    // Implementación de la interfaz IToJson
     public function toJson() {
+        // Se utiliza json_encode para convertir el objeto a JSON
         return json_encode([
             'nombre' => $this->nombre,
             'descripcion' => $this->descripcion,
@@ -69,3 +74,4 @@ class Element implements IToJson {
         ]);
     }
 }
+?>

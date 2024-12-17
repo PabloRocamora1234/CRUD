@@ -1,107 +1,92 @@
 <?php
 namespace models;
 
-require_once 'DB.php';
+use PDO;
+use models\Element;
+
+require_once 'Element.php';
 
 class ElementManager {
-    private $connection;
+    // Obtener un elemento por ID
+    public function getElement($id) {
+        $db = DB::getInstance();
+        $stmt = $db->prepare('SELECT * FROM elementos WHERE id = :id');
+        $stmt->execute(['id' => $id]);
 
-    public function __construct() {
-        $this->connection = DB::getInstance();
-    }
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    public function createElement(Element $element): bool {
-        $sql = "INSERT INTO elementos (nombre, descripcion, nserie, estado, prioridad) VALUES (:nombre, :descripcion, :nserie, :estado, :prioridad)";
-        $stmt = $this->connection->prepare($sql);
-
-        $nombre = $element->getNombre();
-        $descripcion = $element->getDescripcion();
-        $nserie = $element->getNumeroSerie();
-        $estado = $element->getEstado();
-        $prioridad = $element->getPrioridad();
-
-        if (empty($nserie)) {
-            throw new \Exception("El número de serie no puede estar vacío.");
-        }
-
-        $stmt->bindParam(':nombre', $nombre);
-        $stmt->bindParam(':descripcion', $descripcion);
-        $stmt->bindParam(':nserie', $nserie);
-        $stmt->bindParam(':estado', $estado);
-        $stmt->bindParam(':prioridad', $prioridad);
-
-        try {
-            return $stmt->execute();
-        } catch (\PDOException $e) {
-            echo "Error en la inserción: " . $e->getMessage();
-            return false;
-        }
-    }
-
-    public function getElement(int $id): ?Element {
-        $sql = "SELECT * FROM elementos WHERE id = :id";
-        $stmt = $this->connection->prepare($sql);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-
-        $row = $stmt->fetch();
         if ($row) {
-            return new Element($row['nombre'], $row['descripcion'], $row['nserie'], $row['estado'], $row['prioridad']);
+            return new Element($row);
         }
-
         return null;
     }
 
-    public function deleteElement(int $id): ?Element {
-        $element = $this->getElement($id);
-        if ($element) {
-            $sql = "DELETE FROM elementos WHERE id = :id";
-            $stmt = $this->connection->prepare($sql);
-            $stmt->bindParam(':id', $id);
-            $stmt->execute();
-            return $element;
-        }
+    // Obtener todos los elementos
+    public function getAllElements() {
+        $db = DB::getInstance();
+        $stmt = $db->query('SELECT * FROM elementos');
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        return null;
+        return array_map(function ($row) {
+            return new Element($row);
+        }, $rows);
     }
 
-    public function modifyElement(int $id, Element $element): bool {
-        $sql = "UPDATE elementos SET nombre = :nombre, descripcion = :descripcion, nserie = :nserie, estado = :estado, prioridad = :prioridad WHERE id = :id";
-        $stmt = $this->connection->prepare($sql);
+    // Crear un nuevo elemento
+    public function createElement($data) {
+        $db = DB::getInstance();
+        $stmt = $db->prepare('INSERT INTO elementos (nombre, descripcion, nserie, estado, prioridad) VALUES (:nombre, :descripcion, :nserie, :estado, :prioridad)');
+        $stmt->execute($data);
+    }
+
+    // Actualizar un elemento existente
+    public function updateElement($id, $data) {
+        $db = DB::getInstance();
     
-        // Asignación de valores a variables
-        $nombre = $element->getNombre();
-        $descripcion = $element->getDescripcion();
-        $nserie = $element->getNumeroSerie();
-        $estado = $element->getEstado();
-        $prioridad = $element->getPrioridad();
+        // Filtrar los campos no vacíos o definidos
+        $fields = [];
+        $params = ['id' => $id];
     
-        // Uso de bindParam
-        $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':nombre', $nombre);
-        $stmt->bindParam(':descripcion', $descripcion);
-        $stmt->bindParam(':nserie', $nserie);
-        $stmt->bindParam(':estado', $estado);
-        $stmt->bindParam(':prioridad', $prioridad);
+        foreach ($data as $key => $value) {
+            if ($value !== null && $value !== '') { // Solo incluir campos no vacíos
+                $fields[] = "$key = :$key";
+                $params[$key] = $value;
+            }
+        }
+    
+        // Verificar que hay al menos un campo para actualizar
+        if (empty($fields)) {
+            throw new \Exception('No hay datos válidos para actualizar.');
+        }
+    
+        // Construir la consulta dinámica
+        $sql = 'UPDATE elementos SET ' . implode(', ', $fields) . ' WHERE id = :id';
+        $stmt = $db->prepare($sql);
     
         try {
-            return $stmt->execute();
+            $stmt->execute($params);
         } catch (\PDOException $e) {
-            echo "Error en la modificación: " . $e->getMessage();
-            return false;
+            throw new \Exception("Error al actualizar el elemento: " . $e->getMessage());
         }
-    }    
-
-    public function getAllElements(): array {
-        $sql = "SELECT * FROM elementos";
-        $stmt = $this->connection->prepare($sql);
-        $stmt->execute();
-
-        $elements = [];
-        while ($row = $stmt->fetch()) {
-            $elements[] = new Element($row['nombre'], $row['descripcion'], $row['nserie'], $row['estado'], $row['prioridad']);
-        }
-
-        return $elements;
     }
+
+    // Eliminar un elemento por ID
+    public function deleteElement($id) {
+        // Conectar a la base de datos
+        $db = DB::getInstance();  // Asegúrate de que sea DB::getInstance(), no DB::getConnection()
+
+        // Preparar y ejecutar la consulta para eliminar el elemento
+        $query = "DELETE FROM elementos WHERE id = :id";  // Cambia sensores a elementos
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+        // Ejecutar la consulta
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            throw new Exception('No se pudo eliminar el elemento.');
+        }
+    }
+
 }
+?>

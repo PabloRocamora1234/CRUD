@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tabla de Sensores</title>
-    <script src="js/tabla.js" defer></script> <!-- Vincula el archivo de JavaScript -->
+    <!-- Incluye SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/tabla.js" defer></script>
+    <script src="js/nav.js" defer></script>
 </head>
 <body>
     <h1>Lista de Sensores</h1>
 
-    <!-- Campo de búsqueda -->
     <label for="buscador">Buscar Sensor:</label>
-    <input type="text" id="buscador" placeholder="Buscar por nombre o descripción">
+    <input type="text" id="buscador" placeholder="Buscar por nombre o descripción" />
 
     <table border="1" id="tablaSensores">
         <thead>
@@ -21,21 +23,38 @@
                 <th>Número de Serie</th>
                 <th>Estado</th>
                 <th>Prioridad</th>
-                <th>Acciones</th> <!-- Nueva columna de acciones -->
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Filas generadas dinámicamente por JavaScript -->
+            <!-- Las filas serán generadas dinámicamente por JavaScript -->
         </tbody>
     </table>
 
-    <hr>
-    <ul>
-        <li><a href="formulario.html">Formulario</a></li>
-        <li><a href="tabla.html">Tabla</a></li>
-        <li><a href="pagina1.html">Página 1</a></li>
-        <li><a href="pagina2.html">Página 2</a></li>
-        <li><a href="pagina3.html">Página 3</a></li>
-    </ul>
+    <form id="formularioEdicion" style="display:none; margin-top: 20px;">
+        <h2>Editar Sensor</h2>
+    
+        <label for="id">ID del Elemento:</label><br>
+        <input type="hidden" id="id"><br><br> <!-- Campo oculto para el ID -->
+    
+        <label for="nombre">Nombre del Elemento:</label><br>
+        <input type="text" id="nombre"><br><br>
+    
+        <label for="descripcion">Descripción del Elemento:</label><br>
+        <textarea id="descripcion"></textarea><br><br>
+    
+        <label for="nserie">Número de Serie:</label><br>
+        <input type="text" id="nserie"><br><br>
+    
+        <label for="estado">Estado:</label><br>
+        <input type="checkbox" id="estado" value="activo"> Activo<br><br>
+    
+        <label for="prioridad">Prioridad:</label><br>
+        <input type="radio" id="alta" name="prioridad" value="alta"> Alta<br>
+        <input type="radio" id="media" name="prioridad" value="media"> Media<br>
+        <input type="radio" id="baja" name="prioridad" value="baja"> Baja<br><br>
+    
+        <button type="button" id="guardarCambios" style="display:none;">Guardar Cambios</button>
+    </form>    
 </body>
 </html>
