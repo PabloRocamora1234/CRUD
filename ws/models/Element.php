@@ -1,26 +1,30 @@
 <?php
 namespace models;
 
-use Interfaces\ITOJSON; // Importamos la interfaz IToJson
-require_once 'interfaces/ITOJSON.php'; // Aseguramos que la interfaz esté incluida
+use Interfaces\ITOJSON;
+require_once 'interfaces/ITOJSON.php';
 
 class Element implements ITOJSON {
+    private $id;
     private $nombre;
     private $descripcion;
     private $nserie;
     private $estado;
     private $prioridad;
 
-    // Constructor que inicializa las propiedades a partir de un array de datos
     public function __construct($data) {
-        $this->nombre = $data['nombre'] ?? '';  // Usar ?? para valores por defecto
+        $this->id = $data['id'] ?? null;
+        $this->nombre = $data['nombre'] ?? '';
         $this->descripcion = $data['descripcion'] ?? '';
         $this->nserie = $data['nserie'] ?? '';
         $this->estado = $data['estado'] ?? '';
         $this->prioridad = $data['prioridad'] ?? '';
     }
 
-    // Métodos getters
+    public function getId() {
+        return $this->id;
+    }
+
     public function getNombre() {
         return $this->nombre;
     }
@@ -41,7 +45,10 @@ class Element implements ITOJSON {
         return $this->prioridad;
     }
 
-    // Métodos setters
+    public function setId($id) {
+        $this->id = $id;
+    }
+
     public function setNombre($nombre) {
         $this->nombre = $nombre;
     }
@@ -50,7 +57,7 @@ class Element implements ITOJSON {
         $this->descripcion = $descripcion;
     }
 
-    public function setNumeroSerie($numero_serie) {
+    public function setNumeroSerie($nserie) {
         $this->nserie = $nserie;
     }
 
@@ -62,10 +69,9 @@ class Element implements ITOJSON {
         $this->prioridad = $prioridad;
     }
 
-    // Implementación de la interfaz IToJson
     public function toJson() {
-        // Se utiliza json_encode para convertir el objeto a JSON
         return json_encode([
+            'id' => $this->id,
             'nombre' => $this->nombre,
             'descripcion' => $this->descripcion,
             'nserie' => $this->nserie,
